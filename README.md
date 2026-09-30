@@ -1,2 +1,4 @@
 # mfg471.github.io
-Website to deploy da hacks
+this website does NOT deploy da hax.
+It is truly informational (not just saying that to disguise as a “gaming” website)
+
