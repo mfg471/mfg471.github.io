@@ -1,0 +1,36 @@
+name: Pull External Game
+on:
+  workflow_dispatch:
+    inputs:
+      repo_url:
+        description: 'The full GitHub URL of the game repository'
+        required: true
+        default: 'https://github.com'
+      folder_name:
+        description: 'The folder name inside your website (e.g., polytrack)'
+        required: true
+        default: 'polytrack'
+
+jobs:
+  copy-game:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout your site code
+        uses: actions/checkout@v4
+
+      - name: Clone the external game repository
+        run: git clone ${{ github.event.inputs.repo_url }} temp-game
+
+      - name: Move files into your website structure
+        run: |
+          mkdir -p games/${{ github.event.inputs.folder_name }}
+          cp -r temp-game/* games/${{ github.event.inputs.folder_name }}/
+          rm -rf games/${{ github.event.inputs.folder_name }}/.git
+
+      - name: Commit and push straight to your website
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add games/${{ github.event.inputs.folder_name }}
+          git commit -m "Automated pull of game: ${{ github.event.inputs.folder_name }}"
+          git push
