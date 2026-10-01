@@ -1,4 +1,16 @@
-.format-style {
-color:black;
+.linkButtonStyle {
+display: inline-block;
+padding: 0.01rem 0.3rem;
+color: #ffff00;
+background-color: #000;
 text-decoration: none;
+border-radius: 50px;
+transition: background-color 0.7s ease, color 0.7s ease;
+
 }
+
+.linkButtonStyle:hover {
+background-color: #ffff00;
+color: black;
+}
+
