@@ -2,8 +2,22 @@
 	<meta name="robots" content="noindex,nofollow" />
 	<meta charset="utf-8">
 
-	<!-- 🚀 The `<base>` tag pulls the massive game engines from your asset repo -->
-	<!-- Swap out 'YOUR-ASSET-REPO' with the repository holding your heavy files -->
-	<base href="https://github.com/mfg471/cgi-cdn/tree/main/games/poly-track/poly-track">
+	<!-- 🚀 The path is completely correct now -->
+	<base href="https://mfg471.github.io/games/poly-track/poly-track/">
+
+	<script>
+		(function() {
+			const OriginalWorker = window.Worker;
+			window.Worker = function(stringUrl, options) {
+				const resolvedUrl = new URL(stringUrl, document.baseURI).href;
+				if (resolvedUrl.indexOf(window.location.origin) !== 0) {
+					const blobCode = "importScripts('" + resolvedUrl + "');";
+					const blob = new Blob([blobCode], { type: 'application/javascript' });
+					return new OriginalWorker(URL.createObjectURL(blob), options);
+				}
+				return new OriginalWorker(stringUrl, options);
+			};
+		})();
+	</script>
 
 	<link rel="preload" href="forced_square.woff2" as="font" type="font/woff2" crossorigin="anonymous"/><link rel="preload" href="images/logo.svg" as="image" type="image/svg+xml"/><link rel="preload" href="images/discord.svg" as="image" type="image/svg+xml"/><link rel="manifest" href="manifest.json"/><meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no"><script defer="defer" src="error_screen.bundle.js"></script><script defer="defer" src="main.bundle.js"></script></head><body><canvas id="screen"></canvas><div id="ui"></div><div id="transition-layer"></div></body></html>
