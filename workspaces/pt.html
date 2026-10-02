@@ -1,24 +1,20 @@
-<!doctype html><html><head>
-	<meta name="robots" content="noindex,nofollow" />
-	<meta charset="utf-8">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <!-- This is what shows on the browser tab if a teacher glances over -->
+  <title>The CGI | Workspaces Sandbox</title>
+  <style>
+    /* Forces the game window to stretch perfectly to the edges of your iPad screen */
+    body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; }
+    iframe { width: 100%; height: 100%; border: none; display: block; }
+  </style>
+</head>
+<body>
 
-	<!-- 🚀 The Corrected, Live Repository URL -->
-	<base href="https://mfg471.github.io/cgi-cdn/games/poly-track/assets/">
+  <!-- Securely streams the working game package natively inside an isolated frame -->
+  <iframe src="https://mfg471.github.io/cgi-cdn/games/poly-track/assets/index.html" allowfullscreen></iframe>
 
-	<script>
-		// 🔥 This interceptor wraps the physics engine worker cleanly for mobile WebKit
-		(function() {
-			const OriginalWorker = window.Worker;
-			window.Worker = function(stringUrl, options) {
-				const resolvedUrl = new URL(stringUrl, document.baseURI).href;
-				if (resolvedUrl.indexOf(window.location.origin) !== 0) {
-					const blobCode = "importScripts('" + resolvedUrl + "');";
-					const blob = new Blob([blobCode], { type: 'application/javascript' });
-					return new OriginalWorker(URL.createObjectURL(blob), options);
-				}
-				return new OriginalWorker(stringUrl, options);
-			};
-		})();
-	</script>
-
-	<link rel="preload" href="forced_square.woff2" as="font" type="font/woff2" crossorigin="anonymous"/><link rel="preload" href="images/logo.svg" as="image" type="image/svg+xml"/><link rel="preload" href="images/discord.svg" as="image" type="image/svg+xml"/><link rel="manifest" href="manifest.json"/><meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no"><script defer="defer" src="error_screen.bundle.js"></script><script defer="defer" src="main.bundle.js"></script></head><body><canvas id="screen"></canvas><div id="ui"></div><div id="transition-layer"></div></body></html>
+</body>
+</html>
