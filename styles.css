@@ -16,14 +16,14 @@ color: black;
 .linkWorkButtonStyle{
     display:inline-block;
     padding:0.35rem 0.20rem;
-    border-style: dashed;
-    border-color: black;
+    background-color: #000;
+    border: 4px double blue;
     color: #ffff00;
     text-decoration: underline wavy #f00;
-    border-radius: 25px;
+    border-radius: 15px;
     transition: text-decoration 0.5s ease, border-radius 0.3s ease; 
 }
 .linkWorkButtonStyle:hover{
     text-decoration: underline double #ff0;
-    border-radius: 10px;
+    border-radius: 30px;
 }
