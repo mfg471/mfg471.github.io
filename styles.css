@@ -16,8 +16,10 @@ color: black;
 .linkWorkButtonStyle{
     display:inline-block;
     padding:0.35rem 0.20rem;
-    color: #042a3f;
-    text-decoration: underline wavy #ff0;
+    border-style: dashed;
+    border-color: black;
+    color: #ffff00;
+    text-decoration: underline wavy #f00;
     border-radius: 25px;
     transition: text-decoration 0.5s ease, border-radius 0.3s ease; 
 }
