@@ -1,0 +1,65 @@
+name: Game Puller
+
+on:
+  # Trigger this manually from your iPad and fill in the input blocks
+  workflow_dispatch:
+    inputs:
+      repo_url:
+        description: 'Target Repository URL (e.g., https://github.com)'
+        required: true
+        type: string
+      branch_name:
+        description: 'Target Branch Name (usually main or master)'
+        required: true
+        default: 'main'
+        type: string
+      target_folder:
+        description: 'Exact path to the game folder (e.g., crossy-road)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  universal-pull:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. Checkout CGI CDN Repo
+        uses: actions/checkout@v4
+
+      - name: 2. Set Up Games Directory
+        run: mkdir -p games
+
+      - name: 3. Isolate and Extract Target Assets
+        run: |
+          # 1. Clean out the URL string to ensure it ends without .git extension bugs
+          REPO_CLEAN=$(echo "${{ github.event.inputs.repo_url }}" | sed 's/\.git$//')
+          
+          # 2. Run a shallow, sparse clone of the target external repository
+          git clone --branch ${{ github.event.inputs.branch_name }} --depth 1 --sparse $REPO_CLEAN.git temp_pull_dir
+          cd temp_pull_dir
+          
+          # 3. Pull only the exact targeted game folder path
+          git sparse-checkout set "${{ github.event.inputs.target_folder }}"
+          cd ..
+          
+          # 4. Extract the base name of the folder for clean directory creation
+          FOLDER_BASE=$(basename "${{ github.event.inputs.target_folder }}")
+          
+          # 5. Move the assets into your local games inventory path
+          cp -r temp_pull_dir/"${{ github.event.inputs.target_folder }}" games/"$FOLDER_BASE"
+          
+          # 6. Wipe temporary cache directory
+          rm -rf temp_pull_dir
+
+      - name: 4. Commit and Push Assets to CGI CDN
+        run: |
+          git config --global user.name "CGI Automation Bot"
+          git config --global user.email "actions@github.com"
+          git add games/
+          
+          # Safely check for changes before firing the commit to prevent runner exit loops
+          FOLDER_BASE=$(basename "${{ github.event.inputs.target_folder }}")
+          git diff-index --quiet HEAD || git commit -m "CGI Engine: Imported game [$FOLDER_BASE] via Universal Game Puller pipeline"
+          git push origin main
